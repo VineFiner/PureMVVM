@@ -51,6 +51,19 @@ static NSInteger ctxKVOCity     = 2;
     /**
      Using UserEvent to bind
      */
+    /// bind input signals
+    [self bindInputSignals];
+    
+    
+    // Model -> View
+    /**
+     Using KVO to bind
+     */
+    /// bind output signals
+    [self bindOutPutSignals];
+}
+#pragma mark - bind input signals
+- (void)bindInputSignals {
     [self.textFieldName addTarget:self
                            action:@selector(actionViewTextFieldChanged:)
                  forControlEvents:UIControlEventEditingChanged];
@@ -60,26 +73,7 @@ static NSInteger ctxKVOCity     = 2;
     [self.textFieldCity addTarget:self
                            action:@selector(actionViewTextFieldChanged:)
                  forControlEvents:UIControlEventEditingChanged];
-    
-    
-    // Model -> View
-    /**
-     Using KVO to bind
-     */
-    [_viewModelUserInfo.modelUserInfo addObserver:self
-                                       forKeyPath:@"name"
-                                          options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                                          context:&ctxKVOName];
-    [_viewModelUserInfo.modelUserInfo addObserver:self
-                                       forKeyPath:@"age"
-                                          options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                                          context:&ctxKVOAge];
-    [_viewModelUserInfo.modelUserInfo addObserver:self
-                                       forKeyPath:@"city"
-                                          options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                                          context:&ctxKVOCity];
 }
-
 - (void)actionViewTextFieldChanged:(UITextView *)sender
 {
     NSLog(@"View -> Model--%d", __LINE__);
@@ -93,6 +87,22 @@ static NSInteger ctxKVOCity     = 2;
     }
 }
 
+#pragma mark - bind output signals
+
+- (void)bindOutPutSignals {
+    [_viewModelUserInfo.modelUserInfo addObserver:self
+                                       forKeyPath:@"name"
+                                          options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                                          context:&ctxKVOName];
+    [_viewModelUserInfo.modelUserInfo addObserver:self
+                                       forKeyPath:@"age"
+                                          options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                                          context:&ctxKVOAge];
+    [_viewModelUserInfo.modelUserInfo addObserver:self
+                                       forKeyPath:@"city"
+                                          options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                                          context:&ctxKVOCity];
+}
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     NSLog(@"Model -> View--%d", __LINE__);
